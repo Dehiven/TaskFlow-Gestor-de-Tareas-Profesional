@@ -1594,7 +1594,7 @@ input[type="date"]:focus {
 }
 
 /* ========================================
-   MOBILE SEARCH BUTTON (hidden on desktop)
+   MOBILE SEARCH BUTTON & BAR (hidden on desktop)
    ======================================== */
 .mobile-search-btn {
     display: none;
@@ -1620,6 +1620,10 @@ input[type="date"]:focus {
 .mobile-search-btn svg {
     width: 18px;
     height: 18px;
+}
+
+.mobile-search-bar {
+    display: none;
 }
 
 /* ========================================
