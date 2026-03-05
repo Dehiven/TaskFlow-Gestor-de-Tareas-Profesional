@@ -1351,14 +1351,23 @@ input[type="date"]:focus {
         height: 22px;
     }
 
-    /* Main layout */
+    /* Main layout — Stacked with specific order */
     .app-main {
         padding: 12px;
         gap: 12px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .tasks-area {
+        order: 1;
+        /* Appears first */
     }
 
     /* Stats: vertical compact */
     .stats-panel {
+        order: 2;
+        /* Appears second */
         flex-direction: column;
         gap: 10px;
     }
