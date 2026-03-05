@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Gestor de tareas profesional y moderno. Organiza tus tareas con categorías, prioridades, fechas y más.">
+    <title>TaskFlow — Gestor de Tareas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="app-header" id="appHeader">
+        <div class="header-left">
+            <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 11l3 3L22 4" />
+                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+            </svg>
+            <h1 class="app-title">Task<span>Flow</span></h1>
+        </div>
+        <div class="header-center">
+            <div class="search-box" id="searchBox">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35" />
+                </svg>
+                <input type="text" id="searchInput" placeholder="Buscar tareas..." autocomplete="off">
+                <button class="search-clear" id="searchClear" aria-label="Limpiar búsqueda">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="mobile-search-btn" id="mobileSearchBtn" aria-label="Buscar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35" />
+                </svg>
+            </button>
+            <button class="theme-toggle" id="themeToggle" aria-label="Cambiar tema">
+                <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5" />
+                    <path
+                        d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                </svg>
+                <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- ===== MOBILE SEARCH BAR (slides under header on mobile) ===== -->
+    <div class="mobile-search-bar" id="mobileSearchBar">
+        <div class="search-box">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
+            </svg>
+            <input type="text" id="mobileSearchInput" placeholder="Buscar tareas..." autocomplete="off">
+            <button class="search-clear" id="mobileSearchClear" aria-label="Limpiar búsqueda">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== MAIN LAYOUT ===== -->
+    <main class="app-main">
+
+        <!-- ===== STATS PANEL ===== -->
+        <aside class="stats-panel" id="statsPanel">
+            <div class="stats-card">
+                <h2 class="stats-title">Resumen</h2>
+                <div class="stat-item">
+                    <span class="stat-label">Total</span>
+                    <span class="stat-value" id="statTotal">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Pendientes</span>
+                    <span class="stat-value stat-pending" id="statPending">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Completadas</span>
+                    <span class="stat-value stat-completed" id="statCompleted">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Vencidas</span>
+                    <span class="stat-value stat-overdue" id="statOverdue">0</span>
+                </div>
+                <div class="progress-section">
+                    <div class="progress-header">
+                        <span>Progreso</span>
+                        <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="stats-card categories-summary" id="categoriesSummary">
+                <h2 class="stats-title">Categorías</h2>
+                <!-- Populated by JS -->
+            </div>
+        </aside>
+
+        <!-- ===== TASKS AREA ===== -->
+        <section class="tasks-area">
+
+            <!-- ===== ADD TASK FORM ===== -->
+            <div class="add-task-card" id="addTaskCard">
+                <h2 class="section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 8v8M8 12h8" />
+                    </svg>
+                    Nueva Tarea
+                </h2>
+                <form id="taskForm" autocomplete="off">
+                    <div class="form-row">
+                        <div class="form-group form-group-main">
+                            <input type="text" id="taskInput" placeholder="¿Qué necesitas hacer?" required
+                                maxlength="200">
+                        </div>
+                    </div>
+                    <div class="form-row form-row-options">
+                        <div class="form-group">
+                            <label for="taskCategory">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z" />
+                                </svg>
+                                Categoría
+                            </label>
+                            <select id="taskCategory">
+                                <option value="personal">🏠 Personal</option>
+                                <option value="trabajo">💼 Trabajo</option>
+                                <option value="estudio">📚 Estudio</option>
+                                <option value="salud">💪 Salud</option>
+                                <option value="otros">📌 Otros</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskPriority">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                                </svg>
+                                Prioridad
+                            </label>
+                            <select id="taskPriority">
+                                <option value="baja">🟢 Baja</option>
+                                <option value="media" selected>🟡 Media</option>
+                                <option value="alta">🔴 Alta</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskDate">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                    <path d="M16 2v4M8 2v4M3 10h18" />
+                                </svg>
+                                Fecha límite
+                            </label>
+                            <input type="date" id="taskDate">
+                        </div>
+                        <button type="submit" class="btn-add" id="addBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 5v14M5 12h14" />
+                            </svg>
+                            Añadir
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- ===== FILTERS ===== -->
+            <div class="filters-bar" id="filtersBar">
+                <div class="filter-group filter-status">
+                    <button class="filter-btn active" data-filter="todas" id="filterAll">Todas</button>
+                    <button class="filter-btn" data-filter="pendientes" id="filterPending">Pendientes</button>
+                    <button class="filter-btn" data-filter="completadas" id="filterCompleted">Completadas</button>
+                </div>
+                <div class="filter-group filter-secondary">
+                    <select class="filter-select" id="filterCategory">
+                        <option value="todas">Todas las categorías</option>
+                        <option value="personal">🏠 Personal</option>
+                        <option value="trabajo">💼 Trabajo</option>
+                        <option value="estudio">📚 Estudio</option>
+                        <option value="salud">💪 Salud</option>
+                        <option value="otros">📌 Otros</option>
+                    </select>
+                    <select class="filter-select" id="filterPriority">
+                        <option value="todas">Todas las prioridades</option>
+                        <option value="alta">🔴 Alta</option>
+                        <option value="media">🟡 Media</option>
+                        <option value="baja">🟢 Baja</option>
+                    </select>
+                    <select class="filter-select" id="sortOrder">
+                        <option value="newest">Más recientes</option>
+                        <option value="oldest">Más antiguas</option>
+                        <option value="priority">Por prioridad</option>
+                        <option value="date">Por fecha límite</option>
+                        <option value="name">Alfabético</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- ===== TASK LIST ===== -->
+            <div class="task-list-container">
+                <ul class="task-list" id="taskList">
+                    <!-- Tasks rendered by JS -->
+                </ul>
+                <div class="empty-state" id="emptyState">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        <path d="M9 14l2 2 4-4" />
+                    </svg>
+                    <h3>¡No hay tareas!</h3>
+                    <p>Añade tu primera tarea para empezar a organizarte</p>
+                </div>
+            </div>
+
+            <!-- ===== BULK ACTIONS ===== -->
+            <div class="bulk-actions" id="bulkActions">
+                <button class="btn-bulk btn-clear-completed" id="clearCompleted">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6" />
+                        <path
+                            d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6M10 11v6M14 11v6M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2" />
+                    </svg>
+                    Limpiar completadas
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== DELETE CONFIRMATION MODAL ===== -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 8v4M12 16h.01" />
+                </svg>
+            </div>
+            <h3>¿Eliminar tarea?</h3>
+            <p class="modal-task-name" id="modalTaskName"></p>
+            <p>Esta acción no se puede deshacer.</p>
+            <div class="modal-actions">
+                <button class="btn-modal btn-cancel" id="modalCancel">Cancelar</button>
+                <button class="btn-modal btn-confirm" id="modalConfirm">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="app-footer">
+        <p>Desarrollado por <span class="footer-brand">Dehiven Code</span></p>
+    </footer>
+
+    <!-- ===== TOAST CONTAINER ===== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
